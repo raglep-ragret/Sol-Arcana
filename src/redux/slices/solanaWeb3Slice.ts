@@ -8,7 +8,8 @@ export const checkIfConnectedToSolana = createAsyncThunk(
     const { solana } = window;
 
     if (!solana) {
-      return throwError("Make sure you have Metamask!");
+      console.log(window);
+      return throwError("Make sure you have Phantom!");
     } else {
       console.log("Solana object loaded: ", solana);
     }
@@ -29,7 +30,7 @@ export const connectToSolana = createAsyncThunk(
     const { solana } = window;
 
     if (!solana) {
-      return throwError("Make sure you have Metamask!");
+      return throwError("Make sure you have Phantom!");
     } else {
       console.log("Solana object loaded: ", solana);
     }
