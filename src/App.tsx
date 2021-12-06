@@ -7,7 +7,7 @@ import {
   connectToSolana,
   selectAuthorizedWallet,
 } from "./redux/slices/solanaWeb3Slice";
-import CandyMachine from "./CandyMachine/index";
+import CandyMachine from "./components/CandyMachine/index";
 
 // Constants
 const TWITTER_HANDLE = "_buildspace";
