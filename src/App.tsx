@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import "./App.css";
-import twitterLogo from "./assets/twitter-logo.svg";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import {
   checkIfConnectedToSolana,
@@ -8,6 +6,7 @@ import {
   selectAuthorizedWallet,
 } from "./redux/slices/solanaWeb3Slice";
 import CandyMachine from "./components/CandyMachine/index";
+import ThreeDCardDrop from "./components/3dCardDrop/ThreeDCardDrop";
 
 // Constants
 const TWITTER_HANDLE = "_buildspace";
@@ -37,6 +36,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <ThreeDCardDrop />
       <div className="container">
         <div className="header-container">
           <p className="header">🍭 Candy Drop</p>
@@ -47,7 +47,6 @@ const App = () => {
         {walletAddress && <CandyMachine publicKey={window.solana.publicKey} />}
 
         <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
             className="footer-text"
             href={TWITTER_LINK}
