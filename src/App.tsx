@@ -7,6 +7,7 @@ import {
 } from "./redux/slices/solanaWeb3Slice";
 import CandyMachine from "./components/CandyMachine/index";
 import ThreeDCardDrop from "./components/3dCardDrop/ThreeDCardDrop";
+import { Box } from "@chakra-ui/layout";
 
 // Constants
 const TWITTER_HANDLE = "_buildspace";
@@ -35,15 +36,18 @@ const App = () => {
   );
 
   return (
-    <div className="App">
-      <ThreeDCardDrop />
-      <div className="container">
-        <div className="header-container">
+    <Box className="App">
+      <Box position="relative" zIndex={1}>
+        <ThreeDCardDrop />
+
+        <Box position="relative" zIndex={30}>
           <p className="header">🍭 Candy Drop</p>
           <p className="sub-text">NFT drop machine with fair mint</p>
           {!walletAddress && renderNotConnectedContainer()}
-        </div>
+        </Box>
+      </Box>
 
+      <div className="container">
         {walletAddress && <CandyMachine publicKey={window.solana.publicKey} />}
 
         <div className="footer-container">
@@ -55,7 +59,7 @@ const App = () => {
           >{`built on @${TWITTER_HANDLE}`}</a>
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 
