@@ -8,10 +8,8 @@ import {
 import CandyMachine from "./components/CandyMachine/index";
 import ThreeDCardDrop from "./components/3dCardDrop/ThreeDCardDrop";
 import { Box } from "@chakra-ui/layout";
-
-// Constants
-const TWITTER_HANDLE = "_buildspace";
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+import { Button } from "@chakra-ui/react";
+import { ReactComponent as SolArcanaLogo } from "./images/sol_arcana_logo.svg";
 
 const App = () => {
   const walletAddress = useAppSelector(selectAuthorizedWallet);
@@ -26,38 +24,112 @@ const App = () => {
 
   const connectWallet = () => dispatch(connectToSolana());
 
-  const renderNotConnectedContainer = () => (
-    <button
-      className="cta-button connect-wallet-button"
-      onClick={connectWallet}
-    >
-      Connect to Wallet
-    </button>
-  );
-
   return (
-    <Box className="App">
-      <Box position="relative" zIndex={1}>
+    <Box>
+      <Box
+        bgGradient="linear-gradient(to right, #ff416c, #ff4b2b)"
+        position="relative"
+        height="100vh"
+        zIndex={1}
+      >
         <ThreeDCardDrop />
 
-        <Box position="relative" zIndex={30}>
-          <p className="header">🍭 Candy Drop</p>
-          <p className="sub-text">NFT drop machine with fair mint</p>
-          {!walletAddress && renderNotConnectedContainer()}
+        <Box position="absolute" height="100%" width="100%" zIndex={3}>
+          <Box
+            display="flex"
+            justifyContent="end"
+            paddingX={2}
+            paddingY={2}
+            position="absolute"
+            width="100%"
+          >
+            {walletAddress ? (
+              <Button
+                backgroundColor="white"
+                borderColor="black"
+                borderWidth="1px"
+                borderRadius={0}
+                boxShadow="2px 2px 0 black"
+                disabled
+                fontSize={12}
+                fontWeight={300}
+                letterSpacing={0.5}
+                marginRight="6px"
+                onClick={connectWallet}
+                size="xs"
+                textColor="black"
+                variant="outline"
+              >
+                CONNECTED
+              </Button>
+            ) : (
+              <Button
+                backgroundColor="white"
+                borderColor="black"
+                borderWidth="1px"
+                borderRadius={0}
+                boxShadow="2px 2px 0 black"
+                fontSize={12}
+                fontWeight={300}
+                letterSpacing={0.5}
+                marginRight="6px"
+                onClick={connectWallet}
+                size="xs"
+                textColor="black"
+                variant="outline"
+              >
+                CONNECT WALLET
+              </Button>
+            )}
+          </Box>
+
+          <Box
+            as="header"
+            alignItems="center"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            height="100%"
+            width="100%"
+            zIndex={3}
+          >
+            <SolArcanaLogo style={{ width: "24em" }} />
+            <Box
+              fontSize="30px"
+              fontWeight={800}
+              lineHeight="30px"
+              marginTop={8}
+              textAlign="center"
+              width="16em"
+            >
+              Sol Arcana is a Solana-based NFT drop of collectible cards of the
+              major arcana of the tarot.
+            </Box>
+            <Button
+              backgroundColor="white"
+              borderColor="black"
+              borderWidth="1px"
+              borderRadius={0}
+              boxShadow="2px 2px 0 black"
+              fontSize={18}
+              fontWeight={300}
+              letterSpacing={1}
+              marginTop={8}
+              onClick={connectWallet}
+              size="md"
+              textColor="black"
+              variant="outline"
+            >
+              DRAW A CARD
+            </Button>
+          </Box>
         </Box>
       </Box>
 
       <div className="container">
         {walletAddress && <CandyMachine publicKey={window.solana.publicKey} />}
 
-        <div className="footer-container">
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
-        </div>
+        <div className="footer-container"></div>
       </div>
     </Box>
   );

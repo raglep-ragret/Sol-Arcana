@@ -18,7 +18,7 @@ const ThreeDCardDrop = () => (
     left="0"
     zIndex={2}
   >
-    <Canvas gl={{ alpha: false }} camera={{ near: 0.01, far: 110, fov: 30 }}>
+    <Canvas camera={{ near: 0.01, far: 110, fov: 30 }}>
       <ambientLight intensity={0.2} />
       <spotLight position={[10, 10, 10]} intensity={2} />
 
