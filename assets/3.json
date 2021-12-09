@@ -1,0 +1,25 @@
+{
+  "name": "III - The Empress",
+  "symbol": "TAROT",
+  "description": "Tarot arcana NFT drop on Solana.",
+  "image": "3.png",
+  "collection": {
+    "name": "Sol Arcana",
+    "family": "Sol Arcana"
+  },
+  "properties": {
+    "files": [
+      {
+        "uri": "3.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "6kULuxCZNV2Mm5gxm1hVMo5Fzqg92vBYEi3sBbFUAQE6",
+        "share": 100
+      }
+    ]
+  }
+}
