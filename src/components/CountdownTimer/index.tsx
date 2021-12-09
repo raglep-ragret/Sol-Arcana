@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./CountdownTimer.css";
 
 const CountdownTimer = ({ dropDate }: { dropDate: Date }) => {
   // State
@@ -39,12 +38,7 @@ const CountdownTimer = ({ dropDate }: { dropDate: Date }) => {
     };
   }, []);
 
-  return (
-    <div className="timer-container">
-      <p className="timer-header">Candy Drop Starting In</p>
-      {timerString && <p className="timer-value">{`⏰ ${timerString}`}</p>}
-    </div>
-  );
+  return <>`The Sol Arcana drop will begin in ${timerString}`</>;
 };
 
 export default CountdownTimer;

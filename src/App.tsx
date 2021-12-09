@@ -115,7 +115,11 @@ const App = () => {
               fontWeight={300}
               letterSpacing={1}
               marginTop={8}
-              onClick={connectWallet}
+              onClick={() => {
+                document
+                  .getElementById("mintWrapper")
+                  ?.scrollIntoView({ block: "start", behavior: "smooth" });
+              }}
               size="md"
               textColor="black"
               variant="outline"
@@ -126,11 +130,7 @@ const App = () => {
         </Box>
       </Box>
 
-      <div className="container">
-        {walletAddress && <CandyMachine publicKey={window.solana.publicKey} />}
-
-        <div className="footer-container"></div>
-      </div>
+      {walletAddress && <CandyMachine publicKey={window.solana.publicKey} />}
     </Box>
   );
 };

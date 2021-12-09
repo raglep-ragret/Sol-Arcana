@@ -3,13 +3,15 @@ import { ConfirmOptions, Connection, PublicKey } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 import { MintLayout, TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
 import { programs } from "@metaplex/js";
-import "./CandyMachine.css";
 import {
   candyMachineProgram,
   TOKEN_METADATA_PROGRAM_ID,
   SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
 } from "./helpers";
 import CountdownTimer from "../CountdownTimer";
+import { Box } from "@chakra-ui/layout";
+import { ReactComponent as SolArcanaLogo } from "../../images/sol_arcana_logo.svg";
+import { Button } from "@chakra-ui/react";
 
 const {
   metadata: { Metadata, MetadataProgram },
@@ -27,6 +29,26 @@ const MAX_URI_LENGTH = 200;
 const MAX_SYMBOL_LENGTH = 10;
 const MAX_CREATOR_LEN = 32 + 1 + 1;
 
+const renderDropTimer = (machineStats: ICandyMachineState) => {
+  // Get the current date and dropDate in a JavaScript Date object
+  const currentDate = new Date();
+  const dropDate = new Date(machineStats.goLiveData * 1000);
+
+  // If currentDate is before dropDate, render our Countdown component
+  if (currentDate < dropDate) {
+    // Don't forget to pass over your dropDate!
+    return <CountdownTimer dropDate={dropDate} />;
+  }
+
+  // Else let's just return the current drop date
+  return `Latest News — The drop went live on ${machineStats.goLiveDateTimeString}!`;
+};
+
+interface Mint {
+  name: string;
+  uri: string;
+}
+
 interface ICandyMachineProps {
   publicKey: PublicKey;
 }
@@ -43,7 +65,7 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
   const [machineStats, setMachineStats] = useState<ICandyMachineState | null>(
     null
   );
-  const [mints, setMints] = useState<string[]>([]);
+  const [mints, setMints] = useState<Mint[]>([]);
   const [isMinting, setIsMinting] = useState(false);
   const [isLoadingMints, setIsLoadingMints] = useState(false);
 
@@ -212,7 +234,7 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
           txn,
           async (notification, context) => {
             if (notification.type === "status") {
-              console.log("Receievd status event");
+              console.log("Receievwd status event");
 
               const { result } = notification;
               if (!result.err) {
@@ -359,7 +381,10 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
 
         // Get image URI
         if (!mints.find((mint) => mint === parse.image)) {
-          setMints((prevState) => [...prevState, parse.image]);
+          setMints((prevState) => [
+            ...prevState,
+            { name: mint.data.name, uri: parse.image },
+          ]);
         }
       }
     }
@@ -367,56 +392,156 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
     setIsLoadingMints(false);
   };
 
-  const renderMintedItems = () => (
-    <div className="gif-container">
-      <p className="sub-text">Minted Items ✨</p>
-      <div className="gif-grid">
-        {mints.map((mint) => (
-          <div className="gif-item" key={mint}>
-            <img src={mint} alt={`Minted NFT ${mint}`} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderDropTimer = (machineStats: ICandyMachineState) => {
-    // Get the current date and dropDate in a JavaScript Date object
-    const currentDate = new Date();
-    const dropDate = new Date(machineStats.goLiveData * 1000);
-
-    // If currentDate is before dropDate, render our Countdown component
-    if (currentDate < dropDate) {
-      console.log("Before drop date!");
-      // Don't forget to pass over your dropDate!
-      return <CountdownTimer dropDate={dropDate} />;
-    }
-
-    // Else let's just return the current drop date
-    return <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>;
-  };
-
   return (
     machineStats && (
-      <div className="machine-container">
-        {renderDropTimer(machineStats)}
-        <p>{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
-        {machineStats.itemsRedeemed === machineStats.itemsAvailable ? (
-          <p className="sub-text">Sold Out 🙊</p>
-        ) : (
-          <button
-            className="cta-button mint-button"
-            onClick={mintToken}
-            disabled={isMinting}
-          >
-            Mint NFT
-          </button>
+      <Box
+        backgroundColor="black"
+        id="mintWrapper"
+        minHeight="100vh"
+        textColor="white"
+      >
+        <Box
+          alignItems="center"
+          borderBottom="1px solid white"
+          display="flex"
+          justifyContent="center"
+          height="48px"
+          paddingX={16}
+          marginBottom={8}
+          width="100%"
+        >
+          <Box
+            backgroundColor="#ff416c"
+            bgGradient="linear-gradient(to right, #ff416c, #ff4b2b)"
+            borderRadius="50%"
+            height="18px"
+            marginRight="8px"
+            width="18px"
+          />
+
+          <span>{renderDropTimer(machineStats)}</span>
+        </Box>
+
+        <Box
+          fontWeight={500}
+          marginBottom={8}
+          marginTop={16}
+          paddingX={8}
+          width="100%"
+        >
+          <SolArcanaLogo
+            style={{
+              display: "inline",
+              height: "1em",
+              position: "relative",
+              bottom: -1.75,
+            }}
+          />{" "}
+          is an NFT drop of collectible Tarot cards. There are 21 cards, and
+          each card is a 1/1 edition representing one of the major arcana of the
+          tarot. The cards feature public-domain art from the Rider-Waite Tarot
+          deck. As of now, {machineStats.itemsRedeemed} out of{" "}
+          {machineStats.itemsAvailable} cards have been minted.
+        </Box>
+
+        <Box
+          alignItems="center"
+          display="flex"
+          justifyContent="center"
+          paddingX={16}
+          marginBottom={8}
+          width="100%"
+        >
+          {machineStats.itemsRedeemed === machineStats.itemsAvailable ? (
+            <Button
+              backgroundColor="white"
+              borderColor="black"
+              borderWidth="1px"
+              borderRadius={0}
+              boxShadow="2px 2px 0 black"
+              disabled
+              fontSize={18}
+              fontWeight={300}
+              letterSpacing={1}
+              marginTop={8}
+              size="md"
+              textColor="black"
+              variant="outline"
+            >
+              SOLD OUT
+            </Button>
+          ) : (
+            <Button
+              backgroundColor="white"
+              borderColor="black"
+              borderWidth="1px"
+              borderRadius={0}
+              boxShadow="2px 2px 0 black"
+              fontSize={18}
+              fontWeight={300}
+              letterSpacing={1}
+              onClick={!isMinting ? mintToken : undefined}
+              size="md"
+              textColor="black"
+              variant="outline"
+            >
+              {!isMinting ? "MINT!" : "MINTING..."}
+            </Button>
+          )}
+        </Box>
+
+        {isLoadingMints && mints.length === 0 && (
+          <Box paddingX={8} width="100%">
+            <Box fontWeight={700} fontSize="1.5em" marginBottom={4}>
+              LOADING MINTS...
+            </Box>
+          </Box>
         )}
 
-        {isLoadingMints && <p>LOADING MINTS...</p>}
+        {mints.length > 0 && (
+          <Box paddingX={8} width="100%">
+            <Box fontWeight={700} fontSize="1.5em" marginBottom={4}>
+              Minted Items:
+            </Box>
 
-        {mints.length > 0 && renderMintedItems()}
-      </div>
+            <Box
+              as="ul"
+              display="grid"
+              gridTemplateColumns="repeat(auto-fit, minmax(260px, 1fr))"
+              gridGap="1em"
+            >
+              {mints.map((mint) => (
+                <Box
+                  as="li"
+                  key={mint.uri}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Box
+                    as="li"
+                    key={mint.uri}
+                    backgroundColor="gray.800"
+                    borderRadius={12}
+                    display="flex"
+                    flexDirection="column"
+                    listStyleType="none"
+                    padding="1em"
+                  >
+                    <img
+                      alt={`Minted NFT ${mint}`}
+                      src={mint.uri}
+                      style={{ height: 200 }}
+                    />
+
+                    <Box marginTop={2}>{mint.name}</Box>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+      </Box>
     )
   );
 };
