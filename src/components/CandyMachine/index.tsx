@@ -380,7 +380,7 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
         console.log("Past Minted NFT", mint);
 
         // Get image URI
-        if (!mints.find((mint) => mint === parse.image)) {
+        if (!mints.find((mint) => mint.uri === parse.image)) {
           setMints((prevState) => [
             ...prevState,
             { name: mint.data.name, uri: parse.image },
