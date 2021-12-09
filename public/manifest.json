@@ -1,6 +1,6 @@
 {
-  "short_name": "Candy Drop",
-  "name": "Mint a limited NFT drop on Solana.",
+  "short_name": "Sol Arcana",
+  "name": "Tarot arcana NFt drop on Solana.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,8 +8,8 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#ff416c",
+  "background_color": "#ff416c"
 }

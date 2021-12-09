@@ -27,6 +27,7 @@ const App = () => {
   return (
     <Box>
       <Box
+        bgColor="#ff416c"
         bgGradient="linear-gradient(to right, #ff416c, #ff4b2b)"
         position="relative"
         height="100vh"
