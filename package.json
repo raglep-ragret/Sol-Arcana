@@ -1,5 +1,7 @@
 {
   "name": "candy-drop",
+  "description": "A tarot arcana NFT drop on Solana",
+  "license": "MIT",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
