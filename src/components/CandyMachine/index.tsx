@@ -437,7 +437,7 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
               bottom: -1.75,
             }}
           />{" "}
-          is an NFT drop of collectible Tarot cards. There are 21 cards, and
+          is an NFT drop of collectible Tarot cards. There are 22 cards, and
           each card is a 1/1 edition representing one of the major arcana of the
           tarot. The cards feature public-domain art from the Rider-Waite Tarot
           deck. As of now, {machineStats.itemsRedeemed} out of{" "}
