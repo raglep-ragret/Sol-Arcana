@@ -36,7 +36,7 @@ const CountdownTimer = ({ dropDate }: { dropDate: Date }) => {
         clearInterval(interval);
       }
     };
-  }, []);
+  }, [dropDate]);
 
   return <>`The Sol Arcana drop will begin in ${timerString}`</>;
 };

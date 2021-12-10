@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ConfirmOptions, Connection, PublicKey } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor";
 import { MintLayout, TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
@@ -305,10 +305,6 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
     });
   };
 
-  useEffect(() => {
-    getCandyMachineState();
-  }, []);
-
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST as string;
     // Create a new connection object
@@ -321,7 +317,7 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
   };
 
   // Declare getCandyMachineState as an async method
-  const getCandyMachineState = async () => {
+  const getCandyMachineState = useCallback(async () => {
     const provider = getProvider();
 
     // Get metadata about your deployed candy machine program
@@ -390,7 +386,11 @@ const CandyMachine = ({ publicKey }: ICandyMachineProps) => {
     }
 
     setIsLoadingMints(false);
-  };
+  }, [mints]);
+
+  useEffect(() => {
+    getCandyMachineState();
+  }, [getCandyMachineState]);
 
   return (
     machineStats && (
